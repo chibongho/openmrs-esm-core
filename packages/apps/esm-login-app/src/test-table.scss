@@ -1,0 +1,44 @@
+@use '@carbon/colors';
+@use '@carbon/layout';
+@use '@carbon/type';
+@use '@openmrs/esm-styleguide/src/vars' as *;
+@use '@carbon/styles/scss/spacing';
+
+.blah {
+  max-width: 600px;
+  max-height: 90vh;
+  margin: spacing.$spacing-03;
+}
+
+.tableContainer {
+  background-color: $ui-01;
+  // margin: 0 layout.$spacing-05;
+  padding: 0;
+
+  a {
+    text-decoration: none;
+  }
+
+  th {
+    color: $text-02;
+  }
+
+  :global(.cds--data-table) {
+    background-color: $ui-03;
+  }
+
+  .toolbarContainer {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .toolbarContent {
+    display: flex;
+    z-index: 1; // prevent dropdown from getting covered by table elements
+  }
+
+  :global(.cds--table-toolbar) {
+    position: static;
+    overflow: visible;
+  }
+}

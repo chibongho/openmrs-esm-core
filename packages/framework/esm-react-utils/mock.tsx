@@ -3,7 +3,11 @@ import { openmrsFetch } from '@openmrs/esm-api/mock';
 import { configSchema } from '@openmrs/esm-config/mock';
 import { getExtensionStore, getExtensionInternalStore } from '@openmrs/esm-extensions/mock';
 import { createGlobalStore } from '@openmrs/esm-state/mock';
-import { isDesktop as realIsDesktop, usePagination as realUsePagination } from './src/index';
+import {
+  isDesktop as realIsDesktop,
+  usePagination as realUsePagination,
+  useServerPagination as realUseServerPagination,
+} from './src/index';
 export { ConfigurableLink, useStore, useStoreWithActions, createUseStore } from './src/index';
 import * as utils from '@openmrs/esm-utils';
 
@@ -61,6 +65,8 @@ export const useFeatureFlag = jest.fn().mockReturnValue(true);
 
 export const usePagination = jest.fn(realUsePagination);
 
+export const useServerPagination = jest.fn(realUseServerPagination);
+
 export const useVisit = jest.fn().mockReturnValue({
   error: null,
   mutate: jest.fn(),
@@ -98,3 +104,19 @@ export const useOnClickOutside = jest.fn();
 export const useBodyScrollLock = jest.fn();
 
 export const isDesktop = jest.fn().mockImplementation(realIsDesktop);
+
+export const useAppContext = jest.fn();
+
+export const useAssignedExtensionIds = jest.fn();
+
+export const useConnectivity = jest.fn();
+
+export const useDefineAppContext = jest.fn();
+
+export const useExtensionSlot = jest.fn();
+
+export const useForceUpdate = jest.fn();
+
+export const useLocations = jest.fn();
+
+export const usePrimaryIdentifierResource = jest.fn();

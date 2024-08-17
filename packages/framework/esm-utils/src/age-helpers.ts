@@ -1,8 +1,8 @@
 /** @module @category Utility */
+import { type DurationInput } from '@formatjs/intl-durationformat/src/types';
+import { getCoreTranslation } from '@openmrs/esm-framework';
 import dayjs from 'dayjs';
 import { getLocale } from './omrs-dates';
-import { DurationFormat } from '@formatjs/intl-durationformat';
-import { type DurationInput } from '@formatjs/intl-durationformat/src/types';
 
 /**
  * Gets a human readable and locale supported representation of a person's age, given their birthDate,
@@ -25,8 +25,6 @@ export function age(birthDate: dayjs.ConfigType, currentDate: dayjs.ConfigType =
   const yearDiff = to.diff(from, 'years');
 
   const duration: DurationInput = {};
-
-  const locale = getLocale();
 
   if (hourDiff < 2) {
     const minuteDiff = to.diff(from, 'minutes');
@@ -51,5 +49,43 @@ export function age(birthDate: dayjs.ConfigType, currentDate: dayjs.ConfigType =
     duration['years'] = yearDiff;
   }
 
-  return new DurationFormat(locale, { style: 'short' }).format(duration);
+  return parseDuration(duration);  
+}
+
+function parseDuration(duration: DurationInput): string {
+  
+  const locale = getLocale();
+
+  const supportedUnits = ['year', 'month', 'week', 'day', 'hour', 'minute'];
+  const formattedTimeValues : string[] = [];
+
+  for(const unit of supportedUnits) {
+    // for some reason, the DurationInput keys are plural, but the Intl.NumberFormat units are singular
+    const key = unit + 's';
+
+    if(duration[key] > 0) {
+      formattedTimeValues.push(
+        new Intl.NumberFormat(locale, {
+          style: 'unit',
+          unit,
+          unitDisplay: 'short',
+        }).format(duration[key])
+      );
+    }
+  }
+
+  // per the logic of above function, supportedUnits.length should either only be 1 or 2
+  if(formattedTimeValues.length == 1) {
+    return formattedTimeValues[0];
+  }
+  else {  // formattedTimeValues.length == 2
+
+    // ex: "17 yrs 1 mth"
+    // we want to translate this in case it is a rtl language, or a language
+    // that doesn't want to put a space in between those values. 
+    return getCoreTranslation("twoUnitTimeValue", "{{bigValue}}, {{smallValue}}", {
+      bigValue: formattedTimeValues[0],
+      smallValue: formattedTimeValues[1]
+    });
+  }
 }

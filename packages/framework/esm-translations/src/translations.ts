@@ -68,5 +68,6 @@ export const coreTranslations = {
   seeMoreLists: 'See {{count}} more lists',
   sex: 'Sex',
   showDetails: 'Show details',
+  twoUnitTimeValue: '{{bigValue}}, {{smallValue}}',
   unknown: 'Unknown',
 };

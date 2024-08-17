@@ -1,6 +1,18 @@
 module.exports = {
   transform: {
-    '^.+\\.tsx?$': ['@swc/jest'],
+    '\\.(m?j|t)sx?$': ['@swc/jest'],
+  },
+  // setupFiles: ['<rootDir>/src/setup-tests.ts'],
+  moduleNameMapper: {
+    'lodash-es': 'lodash',
+    '\\.(s?css)$': 'identity-obj-proxy',
+    '@openmrs/esm-framework': '@openmrs/esm-framework/mock',
+    dexie: require.resolve('dexie'),
+  },
+  globals: {
+    System: {
+      Node: null,
+    },
   },
   testEnvironment: 'jsdom',
   testEnvironmentOptions: {
